@@ -6,34 +6,45 @@ app = Flask(__name__)
 
 @app.route('/ranking')
 def ranking():
-    player_id = request.args.get('id')
-    return player_id
-    #  rank_json = hoge(player_id)
+    return None
+    #  rank_json = hoge()
     #  return rank_json
 
 
 @app.route('/total')
 def total():
-    player_id = request.args.get('id')
-    return player_id
-    #  total_json = hoge(player_id)
-    #  return rank_json
+    return None
+    #  total_score = hoge(player_id)
+    #  return total_score
+
+
+@app.route('/entry_player', methods=["POST"])
+def entry_player():
+    result_json = request.get_data()
+    result_dict = json.loads(result_json)
+
+    player_id = result_dict['id']
+    player_name = result_dict['name']
+    pref = result_dict['pref']
+
+    #  check = hoge(player_id, player_name, pref)
+    #  return check
+
+    return f'{player_id}, {player_name}, {pref}\n'
 
 
 @app.route('/result', methods=["POST"])
 def result():
     result_json = request.get_data()
     result_dict = json.loads(result_json)
-    user_dict = result_dict.values[0]
 
-    player_id = user_dict['id']
-    player_name = user_dict['name']
-    score = user_dict['score']
-    pref = user_dict['pref']
+    player_id = result_dict['id']
+    score = result_dict['score']
 
-    print(result_dict)
-    #  hoge(player_id, player_name, score, pref)
-    return result_json
+    #  check =hoge(player_id, score)
+    #  return check
+
+    return f'{player_id}, {score}\n'
 
 
 if __name__ == '__main__':
