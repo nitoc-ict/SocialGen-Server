@@ -6,16 +6,23 @@ app = Flask(__name__)
 
 @app.route('/ranking')
 def ranking():
-    return None
+    player_id = int(request.args.get('id'))
     #  rank_json = hoge()
     #  return rank_json
+
+    rank_dict = {1: {'id': player_id, 'name': 'hoge', 'score': 100},
+                 2: {'id': player_id+1, 'name': 'fuge', 'score': 90},
+                 3: {'id': player_id+2, 'name': 'fuga', 'score': 80}
+                }
+    rank_json = json.dumps(rank_dict)
+    return rank_json
 
 
 @app.route('/total')
 def total():
-    return None
     #  total_score = hoge(player_id)
     #  return total_score
+    return '10000'
 
 
 @app.route('/entry_player', methods=["POST"])
@@ -30,7 +37,7 @@ def entry_player():
     #  check = hoge(player_id, player_name, pref)
     #  return check
 
-    return f'{player_id}, {player_name}, {pref}\n'
+    return '1'
 
 
 @app.route('/result', methods=["POST"])
@@ -44,7 +51,7 @@ def result():
     #  check =hoge(player_id, score)
     #  return check
 
-    return f'{player_id}, {score}\n'
+    return '1'
 
 
 if __name__ == '__main__':
