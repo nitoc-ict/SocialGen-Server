@@ -1,8 +1,10 @@
 import sqlite3
+import json
 
 dbname = 'PlayerRanking.db'
 conn = sqlite3.connect(dbname)
 cur = conn.cursor()
+
 
 def createTable():
     cur.execute('CREATE TABLE IF NOT EXISTS allJapan(date,id,name,score,pref)')
@@ -54,16 +56,28 @@ def createTable():
     cur.execute('CREATE TABLE IF NOT EXISTS Kagoshima(date,id,name,score)')
     cur.execute('CREATE TABLE IF NOT EXISTS Okinawa(date,id,name,score)')
 
-def insertData(playerId :int, name :str, score :int,pref :str):
+
+def insertData(playerId: int, name: str, score: int, pref: str):
     cur.execute("INSERT INTO allJapan VALUES (datetime('now', '+9 hours'),?,?,?,?)", (playerId, name, score, pref))
-    cur.execute("INSERT INTO " + pref + " VALUES (datetime('now', '+9 hours'),?,?,?)",(playerId, name, score))
+    cur.execute("INSERT INTO " + pref + " VALUES (datetime('now', '+9 hours'),?,?,?)", (playerId, name, score))
     conn.commit()
+
 
 def showRank():
     let = cur.execute("SELECT * FROM allJapan ORDER BY score DESC OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY")
+
+
+def showTotal(pref: str = 'all'):
+    with open('total.json', 'r') as f:
+        total_dict = json.load(f)
+        return total_dict[pref]
 
 
 createTable()
 insertData(335, 'hundo', 50000, 'Okinawa')
 
 conn.close()
+
+
+if __name__ == '__main__':
+    showTotal()
