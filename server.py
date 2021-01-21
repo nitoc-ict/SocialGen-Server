@@ -10,13 +10,27 @@ def ranking():
     #  rank_json = hoge()
     #  return rank_json
 
+    #rank_dict = {'id': player_id, 'name': 'hoge', 'score': 100}
+
+    rank_dict = [{'id': player_id, 'name': 'hoge', 'score': 100},
+                  {'id': player_id, 'name': 'huga', 'score': 90},
+                  {'id': player_id, 'name': 'poe', 'score': 80}
+                 ]
+
+    '''
     rank_dict = {1: {'id': player_id, 'name': 'hoge', 'score': 100},
                  2: {'id': player_id+1, 'name': 'fuge', 'score': 90},
                  3: {'id': player_id+2, 'name': 'fuga', 'score': 80}
-                }
+                 }
+    '''
+
+
     rank_json = json.dumps(rank_dict)
     return rank_json
 
+@app.route('/')
+def test():
+    return 'accept'
 
 @app.route('/total')
 def total():
@@ -55,4 +69,5 @@ def result():
 
 
 if __name__ == '__main__':
+    #app.run(debug=True, host='127.0.0.2')
     app.run(debug=True)
