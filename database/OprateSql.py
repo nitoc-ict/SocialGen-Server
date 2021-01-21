@@ -63,8 +63,8 @@ def insertData(playerId: int, name: str, score: int, pref: str):
     conn.commit()
 
 
-def showRank():
-    let = cur.execute("SELECT * FROM allJapan ORDER BY score DESC OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY")
+def showRank(pref):
+    let = cur.execute("SELECT * FROM ? ORDER BY score DESC OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY", (pref,))
 
 
 def showTotal(pref: str = 'all'):
