@@ -1,9 +1,10 @@
 import sqlite3
-import re
+import json
 
 dbname = 'scoreData.db'
 conn = sqlite3.connect(dbname)
 cur = conn.cursor()
+
 
 def createTable():
     cur.execute("CREATE TABLE IF NOT EXISTS player(id, name, maxScore, area)")
@@ -75,6 +76,15 @@ def addResult(id: int, score: int):
     if hoge[0] < score:
         cur.execute("UPDATE player SET maxScore = ? WHERE id = ?", (score, id))
 
+# def showRank(pref):
+#    rank = cur.execute("SELECT * FROM ? ORDER BY score DESC OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY", (pref,))
+
+
+def showTotal(area: str = 'all'):
+    with open('total.json', 'r') as f:
+        total_dict = json.load(f)
+        return total_dict[area]
+
     conn.commit()
     # check =
     # return(check)
@@ -95,4 +105,9 @@ createTable()
 addUser(1, 'hundo', 'Okinawa')
 addResult(1, 60000)
 '''
+
 conn.close()
+
+
+if __name__ == '__main__':
+    showTotal()
