@@ -1,12 +1,16 @@
 import sqlite3
 import json
 
-dbname = 'PlayerRanking.db'
+dbname = 'scoreData.db'
 conn = sqlite3.connect(dbname)
 cur = conn.cursor()
 
 
 def createTable():
+    #  ユーザテーブル
+    cur.execute("CREATE TABLE IF NOT EXISTS player(id, name, maxScore, area)")
+    
+    #  スコアのテーブル
     cur.execute('CREATE TABLE IF NOT EXISTS allJapan(date,id,name,score,pref)')
     cur.execute('CREATE TABLE IF NOT EXISTS Hokkaido(date,id,name,score)')
     cur.execute('CREATE TABLE IF NOT EXISTS Aomori(date,id,name,score)')
@@ -57,24 +61,55 @@ def createTable():
     cur.execute('CREATE TABLE IF NOT EXISTS Okinawa(date,id,name,score)')
 
 
+
+def addUser(id: int, name: str, area: str):
+    cur.execute("INSERT INTO player VALUES (?,?,?,?)", (id, name, 0, area)) # id重複時の処理はどうする
+    
+
+
 def insertData(playerId: int, name: str, score: int, pref: str):
     cur.execute("INSERT INTO allJapan VALUES (datetime('now', '+9 hours'),?,?,?,?)", (playerId, name, score, pref))
     cur.execute("INSERT INTO " + pref + " VALUES (datetime('now', '+9 hours'),?,?,?)", (playerId, name, score))
     conn.commit()
 
 
-def showRank(pref):
-    let = cur.execute("SELECT * FROM ? ORDER BY score DESC OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY", (pref,))
+def addResult(id: int, score: int):
+    cur.execute("")
+    cur.execute("SELECT maxScore FROM player WHERE id = ?", (id,))
+    hoge = cur.fetchone()
+    if hoge[0] < score:
+        cur.execute("UPDATE player SET maxScore = ? WHERE id = ?", (score, id))
 
 
-def showTotal(pref: str = 'all'):
+# def showRank(pref):
+#    rank = cur.execute("SELECT * FROM ? ORDER BY score DESC OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY", (pref,))
+
+
+def showTotal(area: str = 'all'):
     with open('total.json', 'r') as f:
         total_dict = json.load(f)
-        return total_dict[pref]
+        return total_dict[area]
 
+    conn.commit()
+    # check =
+    # return(check)
 
+''' Un Completed
+def getRank(id: int):
+    return(json,rank,score)
+
+def getTotalScore(area: str):
+    totalJP
+    totalarea
+    totalScore[] = {totalJP,totalarea}
+    return(totalScore[])
+'''
+
+''' test
 createTable()
-insertData(335, 'hundo', 50000, 'Okinawa')
+addUser(1, 'hundo', 'Okinawa')
+addResult(1, 60000)
+'''
 
 conn.close()
 
