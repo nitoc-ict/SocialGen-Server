@@ -6,6 +6,9 @@ dbname = 'database/scoreData.db'
 
 
 def createTable():
+    with open(dbname, 'w'):
+        pass
+
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
 
