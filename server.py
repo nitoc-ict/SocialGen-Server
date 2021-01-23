@@ -10,11 +10,8 @@ app = Flask(__name__)
 
 @app.route('/ranking')
 def ranking():
-    #  player_id = int(request.args.get('id'))
-    #  rank_json = ops.shoRank()
-    #  return rank_json
-
-    return 'weisoiya!'
+    rank_json = ops.showRank()
+    return rank_json
 
 
 @app.route('/total')

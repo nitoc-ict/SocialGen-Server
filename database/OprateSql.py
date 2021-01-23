@@ -6,7 +6,7 @@ dbname = 'database/scoreData.db'
 
 
 def createTable():
-    with open(dbname, 'w'):
+    with open(dbname, 'a'):
         pass
 
     conn = sqlite3.connect(dbname)
@@ -61,7 +61,6 @@ def createTable():
     cur.execute('CREATE TABLE IF NOT EXISTS Miyazaki(id,name,score)')
     cur.execute('CREATE TABLE IF NOT EXISTS Kagoshima(id,name,score)')
     cur.execute('CREATE TABLE IF NOT EXISTS Okinawa(id,name,score)')
-
     conn.commit()
     conn.close()
 
@@ -174,5 +173,31 @@ def showTotal(area: str = 'allJapan'):
         return str(total_dict[area])
 
 
+def showRank(pref: str = 'allJapan'):
+    conn = sqlite3.connect(dbname)
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT id, name, score FROM {pref} ORDER BY score DESC LIMIT 50 OFFSET 0")
+    scoreList = cur.fetchall()
+
+    for i, scoreTuple in enumerate(scoreList):
+        scoreList[i] = {'rank': i + 1, 'id': scoreTuple[0], 'userName': scoreTuple[1], 'score': scoreTuple[2]}
+    conn.commit()
+    conn.close()
+
+    return json.dumps(scoreList)
+
+
 if __name__ == '__main__':
-    creatJson()
+    conn = sqlite3.connect('scoreData.db')
+    cur = conn.cursor()
+
+    for i in range(51):
+        player_id = i+1
+        name = 'hundo'
+        score = player_id
+        pref = 'Okinawa'
+
+        cur.execute("INSERT INTO allJapan VALUES (?,?,?,?)", (player_id, name, score, pref))
+    conn.commit()
+    conn.close()
