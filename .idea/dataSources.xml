@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="PlayerRanking" uuid="9b4aa7e0-075d-4302-9432-85758fec1dd0">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\mi181313\Desktop\ICT\SocialGen\SocialGen-Server\database\PlayerRanking.db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="scoreData" uuid="22b43afa-071d-4d3e-a0c8-31182ef37332">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\mi181313\Desktop\ICT\SocialGen\SocialGen-Server\database\scoreData.db</jdbc-url>
+    </data-source>
+  </component>
+</project>
