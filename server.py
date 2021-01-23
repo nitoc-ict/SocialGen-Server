@@ -1,73 +1,58 @@
 from flask import Flask, request
 import json
+from database import OprateSql as ops
+
+ops.createTable()
+ops.creatJson()
 
 app = Flask(__name__)
 
 
 @app.route('/ranking')
 def ranking():
-    player_id = int(request.args.get('id'))
-    #  rank_json = hoge()
+    #  player_id = int(request.args.get('id'))
+    #  rank_json = ops.shoRank()
     #  return rank_json
 
-    #rank_dict = {'id': player_id, 'name': 'hoge', 'score': 100}
+    return 'weisoiya!'
 
-    rank_dict = [{'id': player_id, 'name': 'hoge', 'score': 100},
-                  {'id': player_id, 'name': 'huga', 'score': 90},
-                  {'id': player_id, 'name': 'poe', 'score': 80}
-                 ]
-
-    '''
-    rank_dict = {1: {'id': player_id, 'name': 'hoge', 'score': 100},
-                 2: {'id': player_id+1, 'name': 'fuge', 'score': 90},
-                 3: {'id': player_id+2, 'name': 'fuga', 'score': 80}
-                 }
-    '''
-
-
-    rank_json = json.dumps(rank_dict)
-    return rank_json
-
-@app.route('/')
-def test():
-    return 'accept'
 
 @app.route('/total')
 def total():
-    #  total_score = hoge(player_id)
-    #  return total_score
-    return '10000'
+    total_score = ops.showTotal()
+    return total_score
 
 
 @app.route('/entry_player', methods=["POST"])
 def entry_player():
+    ops.createTable()
+
     result_json = request.get_data()
     result_dict = json.loads(result_json)
 
-    player_id = result_dict['id']
     player_name = result_dict['name']
     pref = result_dict['pref']
 
-    #  check = hoge(player_id, player_name, pref)
-    #  return check
+    player_id = ops.addUser(player_name, pref)
 
-    return '1'
+    return str(player_id)
 
 
 @app.route('/result', methods=["POST"])
 def result():
+    ops.creatJson()
+
     result_json = request.get_data()
     result_dict = json.loads(result_json)
 
     player_id = result_dict['id']
     score = result_dict['score']
 
-    #  check =hoge(player_id, score)
-    #  return check
+    ops.addResult(player_id, score)
 
-    return '1'
+    return 'OK'
 
 
 if __name__ == '__main__':
-    #app.run(debug=True, host='127.0.0.2')
+    # app.run(debug=True, host='127.0.0.2')
     app.run(debug=True)
