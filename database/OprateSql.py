@@ -186,18 +186,3 @@ def showRank(pref: str = 'allJapan'):
     conn.close()
 
     return json.dumps(scoreList)
-
-
-if __name__ == '__main__':
-    conn = sqlite3.connect('scoreData.db')
-    cur = conn.cursor()
-
-    for i in range(51):
-        player_id = i+1
-        name = 'hundo'
-        score = player_id
-        pref = 'Okinawa'
-
-        cur.execute("INSERT INTO allJapan VALUES (?,?,?,?)", (player_id, name, score, pref))
-    conn.commit()
-    conn.close()
